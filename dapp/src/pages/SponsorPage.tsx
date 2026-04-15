@@ -554,7 +554,7 @@ function SelectedPlayerPanel({
 
   return (
     <Card accent="#2563EB">
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "16px" }}>
+      <div className="wrap-on-mobile" style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "16px" }}>
         <div>
           <div
             style={{
@@ -709,7 +709,7 @@ function SelectedPlayerPanel({
             )}
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: "12px" }}>
             <div>
               <label style={{ fontSize: "12px", color: colors.textSecondary, display: "block", marginBottom: "4px" }}>
                 Amount ({symbol})
@@ -874,15 +874,15 @@ export function SponsorPage() {
 
   return (
     <div>
-      <div style={styles.pageTitle}>🤝 Sponsor a player</div>
-      <div style={styles.pageSubtitle}>
+      <div className="page-title" style={styles.pageTitle}>🤝 Sponsor a player</div>
+      <div className="page-subtitle" style={styles.pageSubtitle}>
         Back a grassroots cricketer directly. Your pledge escrows on-chain and releases only when the DON oracle
         verifies the player hit their milestone — no committees, no claims adjusters.
       </div>
 
       {!onWirefluid && (
         <Card accent={colors.warningText}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "16px" }}>
+          <div className="wrap-on-mobile" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "16px" }}>
             <div>
               <div style={{ fontWeight: 600, color: colors.textPrimary, marginBottom: "4px" }}>
                 Switch to WireFluid testnet

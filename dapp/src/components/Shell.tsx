@@ -30,6 +30,7 @@ export function Shell() {
   return (
     <div style={{ minHeight: "100vh", background: colors.pageBg }}>
       <header
+        className="app-header"
         style={{
           background: colors.headerBg,
           borderBottom: `1px solid ${colors.cardBorder}`,
@@ -44,8 +45,12 @@ export function Shell() {
           zIndex: 10,
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: "20px", flex: 1, minWidth: 0 }}>
+        <div
+          className="app-header-left"
+          style={{ display: "flex", alignItems: "center", gap: "20px", flex: 1, minWidth: 0, flexWrap: "wrap" }}
+        >
           <span
+            className="app-header-brand"
             style={{
               fontSize: "18px",
               fontWeight: 800,
@@ -56,7 +61,7 @@ export function Shell() {
           >
             🏏 Cricket Scholarship DAO
           </span>
-          <nav style={{ display: "flex", gap: "4px", flexWrap: "wrap" }}>
+          <nav className="app-header-nav" style={{ display: "flex", gap: "4px", flexWrap: "wrap" }}>
             {links.map((l) => (
               <NavLink
                 key={l.to}
@@ -72,6 +77,7 @@ export function Shell() {
         <ConnectButton
           showBalance={{ smallScreen: false, largeScreen: true }}
           chainStatus={{ smallScreen: "icon", largeScreen: "full" }}
+          accountStatus={{ smallScreen: "avatar", largeScreen: "full" }}
         />
       </header>
       <main style={{ maxWidth: "1100px", margin: "0 auto", padding: "24px" }}>

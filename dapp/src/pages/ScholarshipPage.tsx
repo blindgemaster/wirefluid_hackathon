@@ -437,8 +437,8 @@ export function ScholarshipPage() {
   return (
     <div>
       {/* Hero */}
-      <div style={styles.pageTitle}>🏏 Cricket Scholarship DAO</div>
-      <div style={styles.pageSubtitle}>
+      <div className="page-title" style={styles.pageTitle}>🏏 Cricket Scholarship DAO</div>
+      <div className="page-subtitle" style={styles.pageSubtitle}>
         Oracle-gated scholarships for grassroots players. Live on WireFluid testnet (chain 92533).
         DON nodes attest performance → the vault releases tokens automatically when thresholds are crossed.
       </div>
@@ -446,7 +446,7 @@ export function ScholarshipPage() {
       {/* Chain banner */}
       {!onWirefluid && (
         <Card accent={colors.warningText}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "16px" }}>
+          <div className="wrap-on-mobile" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "16px" }}>
             <div>
               <div style={{ fontWeight: 600, color: colors.textPrimary, marginBottom: "4px" }}>
                 Switch to WireFluid testnet
@@ -469,7 +469,7 @@ export function ScholarshipPage() {
       {/* Demo controls — only shown to the aggregator wallet (the demo driver) */}
       {onWirefluid && isAggregator && (
         <Card accent="#F59E0B">
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "16px", flexWrap: "wrap" }}>
+          <div className="wrap-on-mobile" style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "16px", flexWrap: "wrap" }}>
             <div style={{ flex: 1, minWidth: "250px" }}>
               <div
                 style={{
@@ -556,7 +556,7 @@ export function ScholarshipPage() {
       )}
 
       {/* Grid */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+      <div className="responsive-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "16px" }}>
         {/* Player card */}
         <Card title="Player" accent="#2563EB" style={{ marginBottom: 0 }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
@@ -591,7 +591,7 @@ export function ScholarshipPage() {
         {/* Scholarship card */}
         <Card title={`Scholarship #${activeScholarshipId.toString()}`} accent="#10B981" style={{ marginBottom: 0 }}>
           <div style={{ display: "flex", alignItems: "baseline", gap: "8px" }}>
-            <span style={{ fontSize: "32px", fontWeight: 800, color: colors.textPrimary, letterSpacing: "-1px" }}>
+            <span className="scholarship-amount" style={{ fontSize: "32px", fontWeight: 800, color: colors.textPrimary, letterSpacing: "-1px" }}>
               {formatUnits(schAmount, decimals)}
             </span>
             <span style={{ fontSize: "14px", color: colors.textSecondary, fontWeight: 600 }}>{symbol}</span>
@@ -639,7 +639,7 @@ export function ScholarshipPage() {
           with gas can call <code>claim()</code> once the threshold is met.
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+        <div className="responsive-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "16px" }}>
           {/* 1. Push stat */}
           <div style={{ padding: "16px", border: `1px solid ${colors.cardBorder}`, borderRadius: "8px", background: colors.inputBg }}>
             <div style={{ fontWeight: 600, color: colors.textPrimary, marginBottom: "4px" }}>1. Push match-day stat</div>

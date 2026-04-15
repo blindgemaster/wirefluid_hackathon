@@ -208,14 +208,14 @@ export function RegisterPage() {
 
   return (
     <div>
-      <div style={styles.pageTitle}>📝 Register a player</div>
-      <div style={styles.pageSubtitle}>
+      <div className="page-title" style={styles.pageTitle}>📝 Register a player</div>
+      <div className="page-subtitle" style={styles.pageSubtitle}>
         Add a grassroots cricketer to the DAO registry. Registration is gasless — a trusted attestor
         signs the transaction on the player's behalf. After registration, DAO members fund scholarships
         and sponsors commit pledges against the player's performance milestones.
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "16px" }}>
+      <div className="responsive-grid" style={{ display: "grid", gridTemplateColumns: "minmax(0, 2fr) minmax(0, 1fr)", gap: "16px" }}>
         <Card accent="#2563EB" style={{ marginBottom: 0 }}>
           <form onSubmit={submit} style={{ display: "grid", gap: "14px" }}>
             <Field
@@ -275,7 +275,7 @@ export function RegisterPage() {
               </div>
             </Field>
 
-            <div style={{ display: "grid", gridTemplateColumns: "140px 1fr", gap: "12px" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: "12px" }}>
               <Field label="Age" hint="6 to 25">
                 <input
                   type="number"
