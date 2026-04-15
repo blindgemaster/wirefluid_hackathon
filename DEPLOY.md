@@ -1,6 +1,9 @@
 # Deploying to WireFluid testnet
 
+Reference for re-deploying the **[Cricket Scholarship DAO](README.md)** contracts from scratch.
 Two scripts, one fund step. End-to-end takes < 5 minutes once the deployer is funded.
+
+> 💡 For the hackathon submission, the contracts are **already deployed** — you can skip this file unless you're redeploying. Live addresses are in the [main README](README.md#deployed-contracts).
 
 ## Prereqs
 

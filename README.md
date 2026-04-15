@@ -170,7 +170,7 @@ forge test -vv
 The [oracle-feeder/](oracle-feeder/) directory is the off-chain half. Two modes:
 
 - **Simulated match** — scripted 80-second T20 innings, deterministic for Loom recording.
-- **CricAPI live** — polls a real match. Configured and tested against a live PSL / IPL scorecard during development.
+- **CricAPI live** — polls a real match. Verified live against an in-play IPL 2026 fixture during development; the same code path handles PSL, BBL, county, and school-league scorecards — anything CricAPI covers.
 
 See [oracle-feeder/README.md](oracle-feeder/README.md) for usage.
 
