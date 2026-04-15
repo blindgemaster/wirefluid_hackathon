@@ -18,6 +18,3 @@ remappings = [
 [rpc_endpoints]
 wirefluid_testnet = "https://evm.wirefluid.com"
 localhost = "http://127.0.0.1:8545"
-
-[etherscan]
-wirefluid = { key = "unused", url = "https://wirefluidscan.com/api", chain = 92533 }
