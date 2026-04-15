@@ -7,6 +7,9 @@ libs = ["../fact/contracts/lib"]
 solc = "0.8.28"
 optimizer = true
 optimizer_runs = 200
+# Allow Solidity to read sources from the neighboring `fact` (DON) repo so we
+# can import the real oracle contracts via the `don/` remapping below.
+allow_paths = ["../fact/contracts/src"]
 remappings = [
     "forge-std/=../fact/contracts/lib/forge-std/src/",
     "don/=../fact/contracts/src/"
