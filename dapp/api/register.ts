@@ -32,6 +32,48 @@ const CHAIN = {
 } as const;
 
 const PLAYER_REGISTRY = "0xEE8Fa28D81AF46C3b382BB5bdE7655b3dBd1630F" as const;
+const PLAYER_THRESHOLD_FEED = "0x1B0F274DE9f1A59f547bfC0350821d0079251efD" as const;
+
+// Default milestones auto-registered for every new player so they're
+// immediately sponsorable. The values match the seed scholarship thresholds.
+const DEFAULT_MILESTONES = [
+  { statLabel: "RUNS_PER_INNINGS", threshold: 50n, display: "50 runs in an innings" },
+  { statLabel: "WICKETS_TAKEN", threshold: 5n, display: "5 wickets in a match" },
+] as const;
+
+const FEED_ABI = [
+  {
+    name: "registerThreshold",
+    type: "function",
+    stateMutability: "nonpayable",
+    inputs: [
+      { name: "playerId", type: "bytes32" },
+      { name: "statKey", type: "bytes32" },
+      { name: "threshold", type: "uint256" },
+    ],
+    outputs: [],
+  },
+  {
+    name: "getThreshold",
+    type: "function",
+    stateMutability: "view",
+    inputs: [
+      { name: "playerId", type: "bytes32" },
+      { name: "statKey", type: "bytes32" },
+    ],
+    outputs: [
+      { name: "threshold", type: "uint256" },
+      { name: "exists", type: "bool" },
+    ],
+  },
+  {
+    name: "admin",
+    type: "function",
+    stateMutability: "view",
+    inputs: [],
+    outputs: [{ type: "address" }],
+  },
+] as const;
 
 // Inline ABI — avoid parseAbi at module scope in case esbuild strips something
 const REGISTRY_ABI = [
@@ -223,12 +265,80 @@ export default async function handler(req: Req, res: Res) {
     });
     await publicClient.waitForTransactionReceipt({ hash: activateHash });
 
+    // --- Auto-register default milestones -------------------------------------
+    // Only if the registrar is also admin of the feed. If not, silently skip —
+    // the player is still registered and activated; an attestor can add
+    // milestones later via cast or a future admin UI.
+    let feedAdmin: string | undefined;
+    try {
+      feedAdmin = (await publicClient.readContract({
+        address: PLAYER_THRESHOLD_FEED,
+        abi: FEED_ABI,
+        functionName: "admin",
+      })) as string;
+    } catch {
+      feedAdmin = undefined;
+    }
+    const isFeedAdmin =
+      !!feedAdmin && feedAdmin.toLowerCase() === account.address.toLowerCase();
+
+    const registeredMilestones: { statLabel: string; threshold: string; display: string; txHash?: string }[] =
+      [];
+
+    if (isFeedAdmin) {
+      for (const m of DEFAULT_MILESTONES) {
+        const statKey = viem.keccak256(viem.stringToHex(m.statLabel));
+        try {
+          // Skip if already registered (the on-chain contract reverts on re-register,
+          // so this check protects against that edge case).
+          const [, exists] = (await publicClient.readContract({
+            address: PLAYER_THRESHOLD_FEED,
+            abi: FEED_ABI,
+            functionName: "getThreshold",
+            args: [playerId, statKey],
+          })) as readonly [bigint, boolean];
+
+          if (exists) {
+            registeredMilestones.push({
+              statLabel: m.statLabel,
+              threshold: m.threshold.toString(),
+              display: m.display,
+            });
+            continue;
+          }
+
+          const hash = await walletClient.writeContract({
+            address: PLAYER_THRESHOLD_FEED,
+            abi: FEED_ABI,
+            functionName: "registerThreshold",
+            args: [playerId, statKey, m.threshold],
+          });
+          await publicClient.waitForTransactionReceipt({ hash });
+          registeredMilestones.push({
+            statLabel: m.statLabel,
+            threshold: m.threshold.toString(),
+            display: m.display,
+            txHash: hash,
+          });
+        } catch (err) {
+          // Log but don't fail the whole registration — the core register/activate
+          // already succeeded. The milestone can be added by admin later.
+          console.error(`[register] milestone ${m.statLabel} failed:`, (err as Error).message);
+        }
+      }
+    } else {
+      console.warn(
+        `[register] registrar ${account.address} is not the feed admin (${feedAdmin}); skipping default milestones`,
+      );
+    }
+
     return res.status(200).json({
       ok: true,
       playerId,
       label: cleanLabel,
       txHash: activateHash,
       registerTxHash: registerHash,
+      milestones: registeredMilestones,
     });
   } catch (err) {
     const msg = (err as Error)?.message ?? String(err);

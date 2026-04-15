@@ -102,10 +102,23 @@ function slugify(raw: string): string {
     .replace(/^-+|-+$/g, "");
 }
 
+interface MilestoneReceipt {
+  statLabel: string;
+  threshold: string;
+  display: string;
+  txHash?: string;
+}
+
 type State =
   | { status: "idle" }
   | { status: "submitting"; step: string }
-  | { status: "success"; txHash: Hex; playerId: Hex; label: string }
+  | {
+      status: "success";
+      txHash: Hex;
+      playerId: Hex;
+      label: string;
+      milestones: MilestoneReceipt[];
+    }
   | { status: "error"; message: string };
 
 export function RegisterPage() {
@@ -183,6 +196,7 @@ export function RegisterPage() {
         txHash: json.txHash as Hex,
         playerId: json.playerId as Hex,
         label: slugify(label),
+        milestones: Array.isArray(json.milestones) ? (json.milestones as MilestoneReceipt[]) : [],
       });
       // Clear form so the user can add another
       setLabel("");
@@ -341,6 +355,35 @@ export function RegisterPage() {
                     {state.txHash.slice(0, 10)}…{state.txHash.slice(-8)} ↗
                   </a>
                 </div>
+                {state.milestones.length > 0 && (
+                  <div style={{ marginTop: "10px", fontSize: "12px" }}>
+                    <div style={{ fontWeight: 600, marginBottom: "4px" }}>
+                      Milestones registered (player is now sponsorable):
+                    </div>
+                    <ul style={{ paddingLeft: "18px", marginTop: "2px" }}>
+                      {state.milestones.map((m) => (
+                        <li key={m.statLabel} style={{ marginBottom: "2px" }}>
+                          {m.display}
+                          {m.txHash ? (
+                            <>
+                              {" · "}
+                              <a
+                                href={`${WIREFLUID_EXPLORER}/tx/${m.txHash}`}
+                                target="_blank"
+                                rel="noreferrer"
+                                style={{ color: colors.textLink, fontFamily: "monospace", fontSize: "11px" }}
+                              >
+                                tx ↗
+                              </a>
+                            </>
+                          ) : (
+                            <span style={{ color: colors.textMuted, fontSize: "11px" }}> · already on-chain</span>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
                 <div style={{ marginTop: "10px", fontSize: "12px" }}>
                   Head to the{" "}
                   <a href="/sponsor" style={{ color: colors.textLink, fontWeight: 600 }}>
