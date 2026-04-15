@@ -8,6 +8,7 @@ import {
   WIREFLUID_EXPLORER,
 } from "../scholarship.config.js";
 import { playerRegistryAbi } from "../abi/scholarship.js";
+import { saveLabel } from "../labelCache.js";
 
 /**
  * Public player registration form.
@@ -173,6 +174,10 @@ export function RegisterPage() {
       if (!res.ok || !json.ok) {
         throw new Error(json.error ?? `HTTP ${res.status}`);
       }
+      // Cache the human label so the /sponsor page shows it instead of the
+      // truncated keccak hash the next time we render.
+      saveLabel(json.playerId as Hex, slugify(label));
+
       setState({
         status: "success",
         txHash: json.txHash as Hex,

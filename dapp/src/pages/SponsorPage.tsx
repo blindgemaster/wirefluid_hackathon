@@ -26,6 +26,7 @@ import {
   playerRegistryAbi,
 } from "../abi/scholarship.js";
 import { playerThresholdFeedAbi } from "../abi/playerThresholdFeed.js";
+import { playerDisplay } from "../labelCache.js";
 
 const STATUS_LABELS = ["None", "Pending", "Active", "Suspended"];
 
@@ -388,17 +389,10 @@ function PlayerTile({
   );
 }
 
-// Truncate a bytes32 to something recognisable. We deliberately don't decode the
-// keccak preimage on-chain — that's a human-readable mapping we could surface
-// from an off-chain label table if we added one. For the demo, the seeded
-// player's keccak preimage is hardcoded in scholarship.config.ts.
+// Human label comes from src/labelCache.ts: known seed entries first,
+// then any labels saved in localStorage when a user registers a new player.
 function shortPlayerLabel(id: Hex): string {
-  // Known labels (extend as more players are registered)
-  const known: Record<string, string> = {
-    "0x1e62d15318c63390b4f36b7c8747c2d9da27b03141b911782877734d8c0d1276":
-      "Rashid · PAK-KPK U17",
-  };
-  return known[id.toLowerCase()] ?? `Player ${id.slice(0, 10)}…`;
+  return playerDisplay(id);
 }
 
 // ---------------------------------------------------------------------------
