@@ -1,0 +1,1 @@
+{"root":["./src/main.tsx","./src/scholarship.config.ts","./src/theme.ts","./src/wagmi.ts","./src/wirefluid.ts","./src/abi/playerthresholdfeed.ts","./src/abi/scholarship.ts","./src/components/shell.tsx","./src/pages/registerpage.tsx","./src/pages/scholarshippage.tsx","./src/pages/sponsorpage.tsx","./api/register.ts"],"version":"5.9.3"}

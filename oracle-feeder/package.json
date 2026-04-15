@@ -1,0 +1,19 @@
+{
+  "name": "wirefluid-oracle-feeder",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Pushes live (or simulated) cricket stats to the WireFluid PlayerThresholdFeed that the Scholarship DAO reads from.",
+  "scripts": {
+    "start": "tsx live-feed.ts"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "viem": "^2.47.11"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3",
+    "@types/node": "^22.10.1"
+  }
+}
