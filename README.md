@@ -39,7 +39,7 @@ No selection meeting. No forms. No waiting.
 | 🌐 **Live dapp** | https://wirefluid-hackathon.vercel.app |
 | 🔗 **Block explorer** | [wirefluidscan.com](https://wirefluidscan.com) |
 | 💧 **Testnet faucet** | [faucet.wirefluid.com](https://faucet.wirefluid.com) |
-| 📼 **Demo Loom** | *(link in submission)* |
+| 
 
 ### Pages you can click
 
@@ -169,24 +169,9 @@ forge test -vv
 
 The [oracle-feeder/](oracle-feeder/) directory is the off-chain half. Two modes:
 
-- **Simulated match** — scripted 80-second T20 innings, deterministic for Loom recording.
 - **CricAPI live** — polls a real match. Verified live against an in-play IPL 2026 fixture during development; the same code path handles PSL, BBL, county, and school-league scorecards — anything CricAPI covers.
 
 See [oracle-feeder/README.md](oracle-feeder/README.md) for usage.
-
----
-
-## What the hackathon judges get to see on-screen
-
-| Beat | What's visible |
-|---|---|
-| **Hook** | Player card on `/scholarship` — registered in a PSL feeder tournament, age 17, threshold 50 runs |
-| **Oracle push** | Terminal prints `RUNS_PER_INNINGS → 63 · tx 0x1be8e4…` — real on-chain transaction |
-| **Progress bar** | Green fill live-ticks in the browser, pill flips to **Ready to claim** |
-| **Payout** | `claim()` tx fires, player wallet balance `989,000 → 990,000 sUSD` in one block |
-| **Explorer** | All visible on [wirefluidscan.com](https://wirefluidscan.com) in real time |
-
-Total elapsed from oracle push to payout: **~10 seconds**. Not a mock, not a dev chain — real WireFluid testnet.
 
 ---
 
@@ -201,19 +186,6 @@ Total elapsed from oracle push to payout: **~10 seconds**. Not a mock, not a dev
 
 ---
 
-## Production roadmap
-
-This is a hackathon submission, not a production system. To ship for real:
-
-1. **Swap deployer-EOA aggregator for the DON's `Aggregator.sol`** — multi-signer ECDSA quorum before `pushStat` succeeds. One tx, no contract changes.
-2. **Wire PCB / federation KYC to `AttestationRegistry`** — tiered attestors with bonded stake that slashes on age fraud or identity theft. The DON repo ships this primitive; we'd just integrate.
-3. **Real stablecoin** — swap sUSD for an IBC-delivered stablecoin (or wrapped WIRE once mainnet).
-4. **Timelock on the DAO** — 48h delay on treasury actions with a guardian veto.
-5. **Bigger adapter network** — CricAPI + ESPN Cricinfo + SportRadar cross-checked per node, 3+ independent DON nodes signing.
-
-Each of these is one-day work once hackathon is done.
-
----
 
 ## Acknowledgements
 
